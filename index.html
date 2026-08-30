@@ -1,0 +1,2377 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prep 2 Interactive Dashboard & Exam Portal - Model B</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1E3A8A; /* Deep Royal Navy */
+      --primary-light: #EFF6FF;
+      --primary-hover: #1E40AF;
+      --secondary: #0D9488; /* Deep Teal */
+      --secondary-light: #F0FDFA;
+      --accent: #7C3AED; /* Vivid Purple */
+      --accent-light: #F5F3FF;
+      --warning: #D97706; /* Warm Amber */
+      --warning-light: #FFFBEB;
+      --danger: #E11D48; /* Rose Crimson */
+      --danger-light: #FFF1F2;
+      --success: #059669; /* Emerald */
+      --success-light: #ECFDF5;
+      --dark: #0F172A;
+      --gray-50: #F8FAFC;
+      --gray-100: #F1F5F9;
+      --gray-200: #E2E8F0;
+      --gray-300: #CBD5E1;
+      --gray-400: #94A3B8;
+      --gray-600: #475569;
+      --gray-800: #1E293B;
+      --border-radius: 14px;
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+      --shadow-md: 0 6px 16px rgba(0,0,0,0.08);
+      --shadow-lg: 0 12px 30px rgba(0,0,0,0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #334155 100%);
+      min-height: 100vh;
+      color: var(--dark);
+      line-height: 1.6;
+      padding: 20px 15px 60px 15px;
+    }
+
+    .en {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      direction: ltr;
+      display: inline-block;
+      text-align: left;
+    }
+
+    .en-block {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      direction: ltr;
+      text-align: left;
+    }
+
+    /* Top Dashboard Bar */
+    .dashboard-topbar {
+      position: sticky;
+      top: 15px;
+      max-width: 950px;
+      margin: 0 auto 25px auto;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      padding: 12px 25px;
+      border-radius: 50px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      z-index: 999;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      border: 1px solid rgba(255,255,255,0.4);
+    }
+
+    .brand-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      font-family: 'Cairo', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 8px 18px;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #2563EB, #1D4ED8);
+      color: white;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #10B981, #059669);
+      color: white;
+    }
+    .btn-success:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+    }
+
+    .btn-outline {
+      background: var(--gray-100);
+      color: var(--gray-800);
+      border: 1px solid var(--gray-300);
+    }
+    .btn-outline:hover {
+      background: var(--gray-200);
+    }
+
+    /* Live Progress Bar */
+    .progress-container {
+      max-width: 950px;
+      margin: 0 auto 20px auto;
+      background: rgba(255,255,255,0.1);
+      padding: 10px 18px;
+      border-radius: 12px;
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .progress-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38BDF8, #10B981);
+      transition: width 0.3s ease;
+    }
+
+    /* Main Container */
+    .page-container {
+      max-width: 950px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    /* Standard Card Sheet */
+    .sheet {
+      background: #FFFFFF;
+      border-radius: var(--border-radius);
+      padding: 30px 35px;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+    }
+
+    /* Header Banner */
+    .sheet-header {
+      border-bottom: 2px solid var(--gray-200);
+      padding-bottom: 15px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .sheet-title-group h1 {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sheet-title-group .subtitle {
+      font-size: 13px;
+      color: var(--gray-600);
+      margin-top: 3px;
+    }
+
+    .student-meta {
+      display: flex;
+      gap: 12px;
+      font-size: 13px;
+      background: var(--gray-50);
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--gray-200);
+      align-items: center;
+    }
+
+    .student-input {
+      border: 1px solid var(--gray-300);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-family: 'Cairo', sans-serif;
+      font-size: 13px;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .student-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    /* Section Headings */
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .badge-diagnostic { background: #E0E7FF; color: #3730A3; }
+    .badge-lesson { background: #CCFBF1; color: #115E59; }
+    .badge-quiz { background: #FEF3C7; color: #92400E; }
+    .badge-homework { background: #FCE7F3; color: #9D174D; }
+    .badge-speaking { background: #EDE9FE; color: #5B21B6; }
+
+    .part-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--dark);
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .score-box {
+      font-size: 12.5px;
+      background: var(--gray-100);
+      border: 1px dashed var(--gray-300);
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-weight: 700;
+      color: var(--gray-800);
+    }
+
+    /* Interactive Questions Grid */
+    .q-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .q-item {
+      background: var(--gray-50);
+      border: 1.5px solid var(--gray-200);
+      border-radius: 10px;
+      padding: 12px 16px;
+      transition: all 0.2s;
+    }
+
+    .q-item:hover {
+      border-color: #93C5FD;
+      background: #FFFFFF;
+    }
+
+    .q-item.answered {
+      border-color: #CBD5E1;
+      background: #FFFFFF;
+    }
+
+    .q-item.correct-answer {
+      border-color: #10B981 !important;
+      background: #ECFDF5 !important;
+    }
+
+    .q-item.wrong-answer {
+      border-color: #EF4444 !important;
+      background: #FEF2F2 !important;
+    }
+
+    .q-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .q-num {
+      background: var(--primary);
+      color: white;
+      font-weight: 800;
+      font-size: 12px;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .q-text {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--dark);
+      flex-grow: 1;
+    }
+
+    .q-options {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px 14px;
+      margin-top: 8px;
+      padding-left: 36px;
+      direction: ltr;
+    }
+
+    @media (max-width: 600px) {
+      .q-options {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .opt-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--gray-800);
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1.5px solid var(--gray-200);
+      background: white;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+
+    .opt-label:hover {
+      background: var(--primary-light);
+      border-color: #93C5FD;
+    }
+
+    .opt-label input[type="radio"] {
+      display: none;
+    }
+
+    .opt-custom-radio {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid var(--gray-400);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.15s;
+    }
+
+    .opt-label input[type="radio"]:checked + .opt-custom-radio {
+      border-color: var(--primary);
+      background: var(--primary);
+    }
+
+    .opt-label input[type="radio"]:checked + .opt-custom-radio::after {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: white;
+      border-radius: 50%;
+    }
+
+    .opt-label.selected {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+
+    .explanation-box {
+      display: none;
+      margin-top: 10px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: 'Cairo', sans-serif;
+      direction: rtl;
+    }
+
+    /* Reading Comprehension Box */
+    .passage-box {
+      background: #FAFAFA;
+      border-left: 4px solid var(--accent);
+      border-top: 1px solid var(--gray-200);
+      border-right: 1px solid var(--gray-200);
+      border-bottom: 1px solid var(--gray-200);
+      padding: 18px 22px;
+      border-radius: 10px;
+      margin-bottom: 18px;
+      font-size: 14.5px;
+      line-height: 1.8;
+      color: #334155;
+    }
+
+    .passage-title {
+      font-weight: 800;
+      font-size: 16px;
+      color: var(--accent);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Text Inputs for Student Answers */
+    .interactive-input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1.5px solid var(--gray-300);
+      border-radius: 8px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 14px;
+      direction: ltr;
+      outline: none;
+      margin-top: 6px;
+      background: white;
+      transition: all 0.2s;
+    }
+
+    .interactive-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    .interactive-textarea {
+      width: 100%;
+      min-height: 120px;
+      padding: 12px 14px;
+      border: 1.5px solid var(--gray-300);
+      border-radius: 10px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 14px;
+      line-height: 1.7;
+      direction: ltr;
+      outline: none;
+      resize: vertical;
+      margin-top: 8px;
+      background: #FFFDF9;
+      transition: all 0.2s;
+    }
+
+    .interactive-textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
+    }
+
+    /* Grammar Rules Presentation */
+    .rule-card {
+      background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
+      border: 1px solid var(--gray-200);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+    }
+
+    .rule-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px dashed var(--gray-300);
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+    }
+
+    .rule-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .formula-box {
+      background: #1E293B;
+      color: #38BDF8;
+      font-family: 'Plus Jakarta Sans', monospace;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      direction: ltr;
+      text-align: left;
+      margin: 8px 0;
+    }
+
+    .example-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+      direction: ltr;
+      text-align: left;
+    }
+
+    @media (max-width: 650px) {
+      .example-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .example-item {
+      background: var(--primary-light);
+      border-left: 3px solid var(--primary);
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+
+    .vs-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 13.5px;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .vs-table th {
+      background: var(--primary);
+      color: white;
+      padding: 8px 12px;
+      font-weight: 700;
+    }
+
+    .vs-table td {
+      padding: 8px 12px;
+      border: 1px solid var(--gray-200);
+      background: white;
+    }
+
+    /* Speaking & Conversation Activity */
+    .speaking-card {
+      background: #FAF5FF;
+      border: 1.5px dashed #A855F7;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 15px;
+    }
+
+    .dialogue-bubble {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 10px;
+      align-items: flex-start;
+      direction: ltr;
+    }
+
+    .avatar-badge {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    .bubble-text {
+      background: white;
+      border: 1px solid var(--gray-200);
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 13.5px;
+      color: var(--gray-800);
+      flex-grow: 1;
+    }
+
+    /* Vocab Pill Cloud */
+    .vocab-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      direction: ltr;
+      text-align: left;
+    }
+
+    @media (max-width: 600px) {
+      .vocab-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .vocab-pill {
+      background: white;
+      border: 1px solid var(--gray-200);
+      padding: 6px 12px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+    }
+
+    .vocab-word {
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .vocab-meaning {
+      font-family: 'Cairo', sans-serif;
+      color: var(--gray-600);
+      font-size: 12px;
+      direction: rtl;
+    }
+
+    /* Voice Recorder Simulator Component */
+    .voice-recorder-box {
+      background: #FFFFFF;
+      border: 1.5px solid #DDD6FE;
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .record-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .record-btn {
+      background: #EF4444;
+      color: white;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .record-btn.recording {
+      animation: pulse-red 1.2s infinite;
+      background: #B91C1C;
+    }
+
+    @keyframes pulse-red {
+      0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+      70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+
+    /* Score Result Modal */
+    .score-banner {
+      display: none;
+      background: linear-gradient(135deg, #1E3A8A, #3B82F6);
+      color: white;
+      padding: 20px 25px;
+      border-radius: 16px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 25px rgba(30, 58, 138, 0.3);
+      text-align: center;
+    }
+
+    .score-banner h2 {
+      font-size: 24px;
+      font-weight: 900;
+      margin-bottom: 6px;
+    }
+
+    .score-details {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      font-size: 15px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .score-pill {
+      background: rgba(255,255,255,0.2);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-weight: 700;
+    }
+
+    /* Print Optimizations */
+    @media print {
+      body {
+        background: transparent !important;
+        padding: 0 !important;
+      }
+
+      .dashboard-topbar, .progress-container, .btn-submit-container, .voice-recorder-box, .explanation-box {
+        display: none !important;
+      }
+
+      .page-container {
+        margin: 0 !important;
+        max-width: 100% !important;
+      }
+
+      .sheet {
+        box-shadow: none !important;
+        border: none !important;
+        border-radius: 0 !important;
+        padding: 20px 25px !important;
+        page-break-after: always !important;
+      }
+
+      .q-options {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+
+      .opt-label {
+        border: 1px solid #CBD5E1 !important;
+        background: transparent !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Floating Dashboard Navigation -->
+  <div class="dashboard-topbar">
+    <div class="brand-title">
+      <span>🚀</span>
+      <span>لوحة الحل والتقييم التفاعلية (Prep 2 Portal - Model B)</span>
+    </div>
+    <div class="top-actions">
+      <button class="btn btn-outline" onclick="resetAllAnswers()">🔄 إعادة تعيين</button>
+      <button class="btn btn-primary" onclick="window.print()">🖨️ طباعة / PDF</button>
+      <button class="btn btn-success" onclick="gradeExam()">✨ تصحيح فوري وحساب الدرجة</button>
+    </div>
+  </div>
+
+  <!-- Real-time Progress Bar -->
+  <div class="progress-container">
+    <div class="progress-labels">
+      <span>نسبة الإنجاز في الأسئلة (Progress):</span>
+      <span id="progress-text">0% مكتمل (0 من 25 سؤال)</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-bar"></div>
+    </div>
+  </div>
+
+  <div class="page-container">
+
+    <!-- Score Banner Display (Shown after clicking Grade) -->
+    <div class="score-banner" id="score-banner">
+      <h2 id="banner-title">🎉 تم تصحيح الامتحان بنجاح!</h2>
+      <p id="banner-subtitle">أداء متميز! إليك تفاصيل النتيجة والتقييم الفوري:</p>
+      <div class="score-details">
+        <div class="score-pill">درجة الاختيار من متعدد: <span id="mcq-score" style="color: #FDE047;">0 / 20</span></div>
+        <div class="score-pill">درجة كويز الحصة: <span id="quiz-score" style="color: #6EE7B7;">0 / 3</span></div>
+        <div class="score-pill">النسبة المئوية: <span id="percentage-score" style="color: #FFFFFF;">0%</span></div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- SHEET 1: PRACTICE EXAM - PART 1 (MCQ 1-10)-->
+    <!-- ========================================== -->
+    <div class="sheet">
+      <div class="sheet-header">
+        <div class="sheet-title-group">
+          <h1>🎯 Comprehensive Test <span class="en" style="font-size: 16px; color: var(--accent);">(Model B - Prep 2)</span></h1>
+          <div class="subtitle">اختبار تحديد المستوى والتثبيت: اختر الإجابة الصحيحة بالضغط المباشر عليها</div>
+        </div>
+        <div class="student-meta">
+          <div>اسم الطالبة: <input type="text" class="student-input" id="studentName" placeholder="اكتب اسمك هنا..." oninput="saveProgress()"></div>
+          <div>التاريخ: <span id="currentDate">2026/08/30</span></div>
+          <div>الدرجة: <span style="color: var(--danger); font-weight: 800;" id="total-badge">.... / 40</span></div>
+        </div>
+      </div>
+
+      <div class="part-title">
+        <div>
+          <span class="section-badge badge-diagnostic">Section A</span>
+          <span>Choose the correct answer from a, b, c, or d:</span>
+        </div>
+        <div class="score-box">20 Marks</div>
+      </div>
+
+      <div class="q-list">
+        <!-- Q1 -->
+        <div class="q-item" id="q-card-1">
+          <div class="q-header">
+            <div class="q-num">1</div>
+            <div class="q-text en">Our school basketball team ............ the national trophy two weeks ago.</div>
+          </div>
+          <div class="q-options">
+            <label class="opt-label" onclick="selectOption(1, 'a', this)">
+              <input type="radio" name="q1" value="a">
+              <span class="opt-custom-radio"></span>
+              <span><strong>a)</strong> wins</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(1, 'b', this)">
+              <input type="radio" name="q1" value="b">
+              <span class="opt-custom-radio"></span>
+              <span><strong>b)</strong> won</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(1, 'c', this)">
+              <input type="radio" name="q1" value="c">
+              <span class="opt-custom-radio"></span>
+              <span><strong>c)</strong> will win</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(1, 'd', this)">
+              <input type="radio" name="q1" value="d">
+              <span class="opt-custom-radio"></span>
+              <span><strong>d)</strong> is winning</span>
+            </label>
+          </div>
+          <div class="explanation-box" id="exp-1"></div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="q-item" id="q-card-2">
+          <div class="q-header">
+            <div class="q-num">2</div>
+            <div class="q-text en">The Earth ............ around the Sun once every 365 days.</div>
+          </div>
+          <div class="q-options">
+            <label class="opt-label" onclick="selectOption(2, 'a', this)">
+              <input type="radio" name="q2" value="a">
+              <span class="opt-custom-radio"></span>
+              <span><strong>a)</strong> moves</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(2, 'b', this)">
+              <input type="radio" name="q2" value="b">
+              <span class="opt-custom-radio"></span>
+              <span><strong>b)</strong> moved</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(2, 'c', this)">
+              <input type="radio" name="q2" value="c">
+              <span class="opt-custom-radio"></span>
+              <span><strong>c)</strong> is moving</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(2, 'd', this)">
+              <input type="radio" name="q2" value="d">
+              <span class="opt-custom-radio"></span>
+              <span><strong>d)</strong> will move</span>
+            </label>
+          </div>
+          <div class="explanation-box" id="exp-2"></div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="q-item" id="q-card-3">
+          <div class="q-header">
+            <div class="q-num">3</div>
+            <div class="q-text en">Be careful! The glass of milk on the edge of the table ............ fall.</div>
+          </div>
+          <div class="q-options">
+            <label class="opt-label" onclick="selectOption(3, 'a', this)">
+              <input type="radio" name="q3" value="a">
+              <span class="opt-custom-radio"></span>
+              <span><strong>a)</strong> will</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(3, 'b', this)">
+              <input type="radio" name="q3" value="b">
+              <span class="opt-custom-radio"></span>
+              <span><strong>b)</strong> is going to</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(3, 'c', this)">
+              <input type="radio" name="q3" value="c">
+              <span class="opt-custom-radio"></span>
+              <span><strong>c)</strong> fell</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(3, 'd', this)">
+              <input type="radio" name="q3" value="d">
+              <span class="opt-custom-radio"></span>
+              <span><strong>d)</strong> falls</span>
+            </label>
+          </div>
+          <div class="explanation-box" id="exp-3"></div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="q-item" id="q-card-4">
+          <div class="q-header">
+            <div class="q-num">4</div>
+            <div class="q-text en">Where ............ your parents spend their summer holidays every year?</div>
+          </div>
+          <div class="q-options">
+            <label class="opt-label" onclick="selectOption(4, 'a', this)">
+              <input type="radio" name="q4" value="a">
+              <span class="opt-custom-radio"></span>
+              <span><strong>a)</strong> does</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(4, 'b', this)">
+              <input type="radio" name="q4" value="b">
+              <span class="opt-custom-radio"></span>
+              <span><strong>b)</strong> do</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(4, 'c', this)">
+              <input type="radio" name="q4" value="c">
+              <span class="opt-custom-radio"></span>
+              <span><strong>c)</strong> did</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(4, 'd', this)">
+              <input type="radio" name="q4" value="d">
+              <span class="opt-custom-radio"></span>
+              <span><strong>d)</strong> are</span>
+            </label>
+          </div>
+          <div class="explanation-box" id="exp-4"></div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="q-item" id="q-card-5">
+          <div class="q-header">
+            <div class="q-num">5</div>
+            <div class="q-text en">Laila ............ her grandparents in the village last Friday.</div>
+          </div>
+          <div class="q-options">
+            <label class="opt-label" onclick="selectOption(5, 'a', this)">
+              <input type="radio" name="q5" value="a">
+              <span class="opt-custom-radio"></span>
+              <span><strong>a)</strong> visits</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(5, 'b', this)">
+              <input type="radio" name="q5" value="b">
+              <span class="opt-custom-radio"></span>
+              <span><strong>b)</strong> is visiting</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(5, 'c', this)">
+              <input type="radio" name="q5" value="c">
+              <span class="opt-custom-radio"></span>
+              <span><strong>c)</strong> visited</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(5, 'd', this)">
+              <input type="radio" name="q5" value="d">
+              <span class="opt-custom-radio"></span>
+              <span><strong>d)</strong> will visit</span>
+            </label>
+          </div>
+          <div class="explanation-box" id="exp-5"></div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="q-item" id="q-card-6">
+          <div class="q-header">
+            <div class="q-num">6</div>
+            <div class="q-text en">I expect our team ............ the final football match tomorrow.</div>
+          </div>
+          <div class="q-options">
+            <label class="opt-label" onclick="selectOption(6, 'a', this)">
+              <input type="radio" name="q6" value="a">
+              <span class="opt-custom-radio"></span>
+              <span><strong>a)</strong> will win</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(6, 'b', this)">
+              <input type="radio" name="q6" value="b">
+              <span class="opt-custom-radio"></span>
+              <span><strong>b)</strong> is winning</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(6, 'c', this)">
+              <input type="radio" name="q6" value="c">
+              <span class="opt-custom-radio"></span>
+              <span><strong>c)</strong> wins</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(6, 'd', this)">
+              <input type="radio" name="q6" value="d">
+              <span class="opt-custom-radio"></span>
+              <span><strong>d)</strong> won</span>
+            </label>
+          </div>
+          <div class="explanation-box" id="exp-6"></div>
+        </div>
+
+        <!-- Q7 -->
+        <div class="q-item" id="q-card-7">
+          <div class="q-header">
+            <div class="q-num">7</div>
+            <div class="q-text en">Nader ............ polite and helpful to everyone he meets.</div>
+          </div>
+          <div class="q-options">
+            <label class="opt-label" onclick="selectOption(7, 'a', this)">
+              <input type="radio" name="q7" value="a">
+              <span class="opt-custom-radio"></span>
+              <span><strong>a)</strong> is always</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(7, 'b', this)">
+              <input type="radio" name="q7" value="b">
+              <span class="opt-custom-radio"></span>
+              <span><strong>b)</strong> always is</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(7, 'c', this)">
+              <input type="radio" name="q7" value="c">
+              <span class="opt-custom-radio"></span>
+              <span><strong>c)</strong> comes always</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(7, 'd', this)">
+              <input type="radio" name="q7" value="d">
+              <span class="opt-custom-radio"></span>
+              <span><strong>d)</strong> always does</span>
+            </label>
+          </div>
+          <div class="explanation-box" id="exp-7"></div>
+        </div>
+
+        <!-- Q8 -->
+        <div class="q-item" id="q-card-8">
+          <div class="q-header">
+            <div class="q-num">8</div>
+            <div class="q-text en">What ............ at 7 PM yesterday when I rang your doorbell?</div>
+          </div>
+          <div class="q-options">
+            <label class="opt-label" onclick="selectOption(8, 'a', this)">
+              <input type="radio" name="q8" value="a">
+              <span class="opt-custom-radio"></span>
+              <span><strong>a)</strong> did you do</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(8, 'b', this)">
+              <input type="radio" name="q8" value="b">
+              <span class="opt-custom-radio"></span>
+              <span><strong>b)</strong> were you doing</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(8, 'c', this)">
+              <input type="radio" name="q8" value="c">
+              <span class="opt-custom-radio"></span>
+              <span><strong>c)</strong> do you do</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(8, 'd', this)">
+              <input type="radio" name="q8" value="d">
+              <span class="opt-custom-radio"></span>
+              <span><strong>d)</strong> are you doing</span>
+            </label>
+          </div>
+          <div class="explanation-box" id="exp-8"></div>
+        </div>
+
+        <!-- Q9 -->
+        <div class="q-item" id="q-card-9">
+          <div class="q-header">
+            <div class="q-num">9</div>
+            <div class="q-text en">This time next month, we ............ our summer vacation in Hurghada.</div>
+          </div>
+          <div class="q-options">
+            <label class="opt-label" onclick="selectOption(9, 'a', this)">
+              <input type="radio" name="q9" value="a">
+              <span class="opt-custom-radio"></span>
+              <span><strong>a)</strong> spend</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(9, 'b', this)">
+              <input type="radio" name="q9" value="b">
+              <span class="opt-custom-radio"></span>
+              <span><strong>b)</strong> will be spending</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(9, 'c', this)">
+              <input type="radio" name="q9" value="c">
+              <span class="opt-custom-radio"></span>
+              <span><strong>c)</strong> spent</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(9, 'd', this)">
+              <input type="radio" name="q9" value="d">
+              <span class="opt-custom-radio"></span>
+              <span><strong>d)</strong> have spent</span>
+            </label>
+          </div>
+          <div class="explanation-box" id="exp-9"></div>
+        </div>
+
+        <!-- Q10 -->
+        <div class="q-item" id="q-card-10">
+          <div class="q-header">
+            <div class="q-num">10</div>
+            <div class="q-text en">Hurry up! The teacher ............ our names right now.</div>
+          </div>
+          <div class="q-options">
+            <label class="opt-label" onclick="selectOption(10, 'a', this)">
+              <input type="radio" name="q10" value="a">
+              <span class="opt-custom-radio"></span>
+              <span><strong>a)</strong> calls</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(10, 'b', this)">
+              <input type="radio" name="q10" value="b">
+              <span class="opt-custom-radio"></span>
+              <span><strong>b)</strong> is calling</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(10, 'c', this)">
+              <input type="radio" name="q10" value="c">
+              <span class="opt-custom-radio"></span>
+              <span><strong>c)</strong> called</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(10, 'd', this)">
+              <input type="radio" name="q10" value="d">
+              <span class="opt-custom-radio"></span>
+              <span><strong>d)</strong> will call</span>
+            </label>
+          </div>
+          <div class="explanation-box" id="exp-10"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- SHEET 2: PRACTICE EXAM - PART 2 (MCQ 11-20)-->
+    <!-- ========================================== -->
+    <div class="sheet">
+      <div class="sheet-header">
+        <div class="sheet-title-group">
+          <h1>🎯 Comprehensive Test <span class="en" style="font-size: 16px; color: var(--accent);">(Cont.)</span></h1>
+          <div class="subtitle">أسئلة الاختيار من متعدد (Questions 11 - 20)</div>
+        </div>
+        <div class="score-box">Questions 11 - 20</div>
+      </div>
+
+      <div class="q-list">
+        <!-- Q11 -->
+        <div class="q-item" id="q-card-11">
+          <div class="q-header">
+            <div class="q-num">11</div>
+            <div class="q-text en">This warm chocolate cake ............ absolutely delicious!</div>
+          </div>
+          <div class="q-options">
+            <label class="opt-label" onclick="selectOption(11, 'a', this)">
+              <input type="radio" name="q11" value="a">
+              <span class="opt-custom-radio"></span>
+              <span><strong>a)</strong> is tasting</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(11, 'b', this)">
+              <input type="radio" name="q11" value="b">
+              <span class="opt-custom-radio"></span>
+              <span><strong>b)</strong> tastes</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(11, 'c', this)">
+              <input type="radio" name="q11" value="c">
+              <span class="opt-custom-radio"></span>
+              <span><strong>c)</strong> taste</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(11, 'd', this)">
+              <input type="radio" name="q11" value="d">
+              <span class="opt-custom-radio"></span>
+              <span><strong>d)</strong> tasted</span>
+            </label>
+          </div>
+          <div class="explanation-box" id="exp-11"></div>
+        </div>
+
+        <!-- Q12 -->
+        <div class="q-item" id="q-card-12">
+          <div class="q-header">
+            <div class="q-num">12</div>
+            <div class="q-text en">We have arranged everything. We ............ our cousin's wedding this Thursday.</div>
+          </div>
+          <div class="q-options">
+            <label class="opt-label" onclick="selectOption(12, 'a', this)">
+              <input type="radio" name="q12" value="a">
+              <span class="opt-custom-radio"></span>
+              <span><strong>a)</strong> attend</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(12, 'b', this)">
+              <input type="radio" name="q12" value="b">
+              <span class="opt-custom-radio"></span>
+              <span><strong>b)</strong> are attending</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(12, 'c', this)">
+              <input type="radio" name="q12" value="c">
+              <span class="opt-custom-radio"></span>
+              <span><strong>c)</strong> attended</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(12, 'd', this)">
+              <input type="radio" name="q12" value="d">
+              <span class="opt-custom-radio"></span>
+              <span><strong>d)</strong> will attend</span>
+            </label>
+          </div>
+          <div class="explanation-box" id="exp-12"></div>
+        </div>
+
+        <!-- Q13 -->
+        <div class="q-item" id="q-card-13">
+          <div class="q-header">
+            <div class="q-num">13</div>
+            <div class="q-text en">As Judy ............ the street, she dropped her school bag.</div>
+          </div>
+          <div class="q-options">
+            <label class="opt-label" onclick="selectOption(13, 'a', this)">
+              <input type="radio" name="q13" value="a">
+              <span class="opt-custom-radio"></span>
+              <span><strong>a)</strong> was crossing</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(13, 'b', this)">
+              <input type="radio" name="q13" value="b">
+              <span class="opt-custom-radio"></span>
+              <span><strong>b)</strong> crossed</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(13, 'c', this)">
+              <input type="radio" name="q13" value="c">
+              <span class="opt-custom-radio"></span>
+              <span><strong>c)</strong> is crossing</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(13, 'd', this)">
+              <input type="radio" name="q13" value="d">
+              <span class="opt-custom-radio"></span>
+              <span><strong>d)</strong> crosses</span>
+            </label>
+          </div>
+          <div class="explanation-box" id="exp-13"></div>
+        </div>
+
+        <!-- Q14 -->
+        <div class="q-item" id="q-card-14">
+          <div class="q-header">
+            <div class="q-num">14</div>
+            <div class="q-text en">The train to Alexandria ............ from platform 4 at 8:30 AM every day.</div>
+          </div>
+          <div class="q-options">
+            <label class="opt-label" onclick="selectOption(14, 'a', this)">
+              <input type="radio" name="q14" value="a">
+              <span class="opt-custom-radio"></span>
+              <span><strong>a)</strong> is leaving</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(14, 'b', this)">
+              <input type="radio" name="q14" value="b">
+              <span class="opt-custom-radio"></span>
+              <span><strong>b)</strong> leaves</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(14, 'c', this)">
+              <input type="radio" name="q14" value="c">
+              <span class="opt-custom-radio"></span>
+              <span><strong>c)</strong> will leave</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(14, 'd', this)">
+              <input type="radio" name="q14" value="d">
+              <span class="opt-custom-radio"></span>
+              <span><strong>d)</strong> left</span>
+            </label>
+          </div>
+          <div class="explanation-box" id="exp-14"></div>
+        </div>
+
+        <!-- Q15 -->
+        <div class="q-item" id="q-card-15">
+          <div class="q-header">
+            <div class="q-num">15</div>
+            <div class="q-text en">It is very cold in this room. I ............ the window immediately.</div>
+          </div>
+          <div class="q-options">
+            <label class="opt-label" onclick="selectOption(15, 'a', this)">
+              <input type="radio" name="q15" value="a">
+              <span class="opt-custom-radio"></span>
+              <span><strong>a)</strong> will close</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(15, 'b', this)">
+              <input type="radio" name="q15" value="b">
+              <span class="opt-custom-radio"></span>
+              <span><strong>b)</strong> am going to close</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(15, 'c', this)">
+              <input type="radio" name="q15" value="c">
+              <span class="opt-custom-radio"></span>
+              <span><strong>c)</strong> close</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(15, 'd', this)">
+              <input type="radio" name="q15" value="d">
+              <span class="opt-custom-radio"></span>
+              <span><strong>d)</strong> closed</span>
+            </label>
+          </div>
+          <div class="explanation-box" id="exp-15"></div>
+        </div>
+
+        <!-- Q16 -->
+        <div class="q-item" id="q-card-16">
+          <div class="q-header">
+            <div class="q-num">16</div>
+            <div class="q-text en">Mona was absent yesterday because she ............ tired.</div>
+          </div>
+          <div class="q-options">
+            <label class="opt-label" onclick="selectOption(16, 'a', this)">
+              <input type="radio" name="q16" value="a">
+              <span class="opt-custom-radio"></span>
+              <span><strong>a)</strong> didn't be</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(16, 'b', this)">
+              <input type="radio" name="q16" value="b">
+              <span class="opt-custom-radio"></span>
+              <span><strong>b)</strong> is</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(16, 'c', this)">
+              <input type="radio" name="q16" value="c">
+              <span class="opt-custom-radio"></span>
+              <span><strong>c)</strong> was</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(16, 'd', this)">
+              <input type="radio" name="q16" value="d">
+              <span class="opt-custom-radio"></span>
+              <span><strong>d)</strong> wasn't</span>
+            </label>
+          </div>
+          <div class="explanation-box" id="exp-16"></div>
+        </div>
+
+        <!-- Q17 -->
+        <div class="q-item" id="q-card-17">
+          <div class="q-header">
+            <div class="q-num">17</div>
+            <div class="q-text en">Choose the correct sentence:</div>
+          </div>
+          <div class="q-options">
+            <label class="opt-label" onclick="selectOption(17, 'a', this)">
+              <input type="radio" name="q17" value="a">
+              <span class="opt-custom-radio"></span>
+              <span><strong>a)</strong> He is knowing the answer now.</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(17, 'b', this)">
+              <input type="radio" name="q17" value="b">
+              <span class="opt-custom-radio"></span>
+              <span><strong>b)</strong> He knows the correct answer now.</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(17, 'c', this)">
+              <input type="radio" name="q17" value="c">
+              <span class="opt-custom-radio"></span>
+              <span><strong>c)</strong> He know the correct answer now.</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(17, 'd', this)">
+              <input type="radio" name="q17" value="d">
+              <span class="opt-custom-radio"></span>
+              <span><strong>d)</strong> He is know the answer now.</span>
+            </label>
+          </div>
+          <div class="explanation-box" id="exp-17"></div>
+        </div>
+
+        <!-- Q18 -->
+        <div class="q-item" id="q-card-18">
+          <div class="q-header">
+            <div class="q-num">18</div>
+            <div class="q-text en">While Youssef was doing his homework, his brother ............ computer games.</div>
+          </div>
+          <div class="q-options">
+            <label class="opt-label" onclick="selectOption(18, 'a', this)">
+              <input type="radio" name="q18" value="a">
+              <span class="opt-custom-radio"></span>
+              <span><strong>a)</strong> played</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(18, 'b', this)">
+              <input type="radio" name="q18" value="b">
+              <span class="opt-custom-radio"></span>
+              <span><strong>b)</strong> was playing</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(18, 'c', this)">
+              <input type="radio" name="q18" value="c">
+              <span class="opt-custom-radio"></span>
+              <span><strong>c)</strong> is playing</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(18, 'd', this)">
+              <input type="radio" name="q18" value="d">
+              <span class="opt-custom-radio"></span>
+              <span><strong>d)</strong> plays</span>
+            </label>
+          </div>
+          <div class="explanation-box" id="exp-18"></div>
+        </div>
+
+        <!-- Q19 -->
+        <div class="q-item" id="q-card-19">
+          <div class="q-header">
+            <div class="q-num">19</div>
+            <div class="q-text en">Don't worry! I ............ you with your science project after school.</div>
+          </div>
+          <div class="q-options">
+            <label class="opt-label" onclick="selectOption(19, 'a', this)">
+              <input type="radio" name="q19" value="a">
+              <span class="opt-custom-radio"></span>
+              <span><strong>a)</strong> help</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(19, 'b', this)">
+              <input type="radio" name="q19" value="b">
+              <span class="opt-custom-radio"></span>
+              <span><strong>b)</strong> will help</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(19, 'c', this)">
+              <input type="radio" name="q19" value="c">
+              <span class="opt-custom-radio"></span>
+              <span><strong>c)</strong> am helping</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(19, 'd', this)">
+              <input type="radio" name="q19" value="d">
+              <span class="opt-custom-radio"></span>
+              <span><strong>d)</strong> helped</span>
+            </label>
+          </div>
+          <div class="explanation-box" id="exp-19"></div>
+        </div>
+
+        <!-- Q20 -->
+        <div class="q-item" id="q-card-20">
+          <div class="q-header">
+            <div class="q-num">20</div>
+            <div class="q-text en">When the bell rang, all the students ............ out of the classroom happily.</div>
+          </div>
+          <div class="q-options">
+            <label class="opt-label" onclick="selectOption(20, 'a', this)">
+              <input type="radio" name="q20" value="a">
+              <span class="opt-custom-radio"></span>
+              <span><strong>a)</strong> rushed</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(20, 'b', this)">
+              <input type="radio" name="q20" value="b">
+              <span class="opt-custom-radio"></span>
+              <span><strong>b)</strong> were rushing</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(20, 'c', this)">
+              <input type="radio" name="q20" value="c">
+              <span class="opt-custom-radio"></span>
+              <span><strong>c)</strong> rush</span>
+            </label>
+            <label class="opt-label" onclick="selectOption(20, 'd', this)">
+              <input type="radio" name="q20" value="d">
+              <span class="opt-custom-radio"></span>
+              <span><strong>d)</strong> are rushing</span>
+            </label>
+          </div>
+          <div class="explanation-box" id="exp-20"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- SHEET 3: PRACTICE EXAM - READING & WRITING -->
+    <!-- ========================================== -->
+    <div class="sheet">
+      <div class="sheet-header">
+        <div class="sheet-title-group">
+          <h1>📖 Section B: Reading Comprehension</h1>
+          <div class="subtitle">اقرأ القطعة التالية ثم أجب عن الأسئلة بكتابة إجابتك مباشرة</div>
+        </div>
+        <div class="score-box">10 Marks</div>
+      </div>
+
+      <div class="passage-box en-block">
+        <div class="passage-title">🌱 Hana's Green Rooftop Garden</div>
+        Thirteen-year-old Hana lives in an apartment building in central Cairo. Last year, she noticed that the building's roof was full of dusty, old boxes and useless items. Hana had an innovative idea: why not transform this empty space into an organic green garden?
+        <br><br>
+        She spoke with her neighbors, and together they cleaned the rooftop and planted fresh mint, tomatoes, and beautiful flowers. At first, watering the plants daily under the hot summer sun was <strong style="color: var(--danger);">challenging</strong>. However, seeing the first red tomatoes grow gave everyone immense joy.
+        <br><br>
+        Now, the rooftop has become a peaceful community area where neighbors meet and enjoy fresh air. Hana is planning to teach students at her school how to start similar gardens. "A small green seed," says Hana proudly, "can bring an entire neighborhood together."
+      </div>
+
+      <div class="q-list en-block" style="margin-bottom: 20px;">
+        <div style="font-weight: 700; font-size: 14px; margin-bottom: 8px; color: var(--primary);">Answer the following questions:</div>
+        
+        <div class="q-item">
+          <strong>1. What is the main idea of the text?</strong>
+          <div style="margin-top: 6px;">
+            <input type="text" class="interactive-input" id="read-q1" placeholder="Type your answer here..." oninput="saveProgress()">
+          </div>
+        </div>
+
+        <div class="q-item">
+          <strong>2. The word <span style="color: var(--danger);">"challenging"</span> in the second paragraph means:</strong>
+          <div style="margin-top: 6px;">
+            <input type="text" class="interactive-input" id="read-q2" placeholder="Type meaning or synonym (e.g. difficult)..." oninput="saveProgress()">
+          </div>
+        </div>
+
+        <div class="q-item">
+          <strong>3. What did Hana and her neighbors plant on the rooftop?</strong>
+          <div style="margin-top: 6px;">
+            <input type="text" class="interactive-input" id="read-q3" placeholder="Type what they planted..." oninput="saveProgress()">
+          </div>
+        </div>
+
+        <div class="q-item">
+          <strong>4. How did Hana's project benefit the neighbors?</strong>
+          <div style="margin-top: 6px;">
+            <input type="text" class="interactive-input" id="read-q4" placeholder="Explain the benefit..." oninput="saveProgress()">
+          </div>
+        </div>
+      </div>
+
+      <div class="sheet-header" style="margin-top: 15px; padding-bottom: 10px;">
+        <div class="sheet-title-group">
+          <h1 style="font-size: 18px;">✍️ Section C: Writing Task</h1>
+          <div class="subtitle">اكتب فقرة متماسكة (80-90 words) مباشرة داخل الصندوق</div>
+        </div>
+        <div class="score-box">10 Marks</div>
+      </div>
+
+      <div style="font-size: 13.5px; margin-bottom: 10px;" class="en-block">
+        <strong>Prompt:</strong> Write a paragraph of <strong>80–90 words</strong> about: <br>
+        <span style="color: var(--accent); font-weight: 700;">"A Day You Participated in a Voluntary Activity or Helped Someone in Need"</span>
+        <div style="font-size: 12px; color: var(--gray-600); margin-top: 3px;">
+          <em>💡 Tips: Describe what you were doing (Past Continuous), what happened (Past Simple), and how you felt.</em>
+        </div>
+      </div>
+
+      <textarea class="interactive-textarea" id="writing-p1" placeholder="Start typing your paragraph here in English (e.g. Last weekend, I volunteered with my friends to help clean our local street...)..." oninput="saveProgress(); updateWordCount(this, 'wc-1')"></textarea>
+      <div style="text-align: left; font-size: 12px; color: var(--gray-600); margin-top: 4px;" class="en">
+        Word Count: <span id="wc-1" style="font-weight: 700; color: var(--primary);">0</span> / 90 words
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- SHEET 4: TODAY'S LESSON - GRAMMAR & VOCAB -->
+    <!-- ========================================== -->
+    <div class="sheet">
+      <div class="sheet-header">
+        <div class="sheet-title-group">
+          <h1>🚀 Today's Core Lesson <span class="en" style="font-size: 15px; color: var(--secondary);">(Prep 2 - Unit Focus)</span></h1>
+          <div class="subtitle">شرح القاعدة: عادات الماضي (Used to vs Didn't use to) والربط مع (While / When)</div>
+        </div>
+        <div class="section-badge badge-lesson">Unit 2 Mastery</div>
+      </div>
+
+      <!-- Rule 1: Used to -->
+      <div class="rule-card">
+        <div class="rule-header">
+          <div class="rule-title">1. Past Habits & States: <span class="en" style="color: var(--accent);">used to + Infinitive</span></div>
+          <span style="font-size: 12px; font-weight: 700; color: var(--secondary);">عادة أو حالة كانت متكررة في الماضي وتوقفت الآن</span>
+        </div>
+        
+        <div class="formula-box">
+          (+) Subject + used to + verb (infinitive)<br>
+          (-) Subject + didn't use to + verb (infinitive) <span style="color: #F87171;">[Notice: use NOT used!]</span><br>
+          (?) Did + Subject + use to + verb (infinitive) ...?
+        </div>
+
+        <div class="example-grid">
+          <div class="example-item">
+            <strong>Positive:</strong> We <strong>used to live</strong> in a small flat, but now we live in a spacious house.
+          </div>
+          <div class="example-item">
+            <strong>Negative:</strong> Tariq <strong>didn't use to drink</strong> coffee, but now he drinks it every day.
+          </div>
+        </div>
+      </div>
+
+      <!-- Rule 2: Contrast & Golden Comparison -->
+      <div class="rule-card">
+        <div class="rule-header">
+          <div class="rule-title">2. Comparison: <span class="en" style="color: var(--primary);">Used to vs. Past Continuous (While/When)</span></div>
+          <span style="font-size: 12px; font-weight: 700; color: var(--primary);">الفرق بين العادة القديمة والحدث المستمر المقاطع</span>
+        </div>
+
+        <table class="vs-table">
+          <thead>
+            <tr>
+              <th>Concept</th>
+              <th>Structure</th>
+              <th>Example Sentence</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Past Habit</strong> (عادة قديمة)</td>
+              <td>used to + inf</td>
+              <td>My brother <strong>used to ride</strong> a bike to school.</td>
+            </tr>
+            <tr>
+              <td><strong>Temporary Interrupted Action</strong></td>
+              <td>While + was/were + v-ing, past simple</td>
+              <td><strong>While</strong> he <strong>was riding</strong> his bike, he saw an accident.</td>
+            </tr>
+            <tr>
+              <td><strong>Present Habit</strong> (عادة في الحاضر)</td>
+              <td>usually / always + Present Simple</td>
+              <td>Now, he <strong>usually takes</strong> the bus. <em>(NOT used to!)</em></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Vocab Cloud for Prep 2 Unit -->
+      <div class="rule-card" style="margin-bottom: 0;">
+        <div class="rule-header">
+          <div class="rule-title">3. Key Vocabulary & Collocations (Prep 2)</div>
+          <span style="font-size: 12px; font-weight: 700; color: var(--accent);">مفردات هامة للحفظ والاستخدام</span>
+        </div>
+
+        <div class="vocab-grid">
+          <div class="vocab-pill">
+            <span class="vocab-word">proud of (+ noun / -ing)</span>
+            <span class="vocab-meaning">فخور بـ</span>
+          </div>
+          <div class="vocab-pill">
+            <span class="vocab-word">volunteer (n / v)</span>
+            <span class="vocab-meaning">متطوع / يتطوع</span>
+          </div>
+          <div class="vocab-pill">
+            <span class="vocab-word">emergency (n)</span>
+            <span class="vocab-meaning">حالة طوارئ</span>
+          </div>
+          <div class="vocab-pill">
+            <span class="vocab-word">heroic deed</span>
+            <span class="vocab-meaning">عمل بطولي نبيل</span>
+          </div>
+          <div class="vocab-pill">
+            <span class="vocab-word">charity organization</span>
+            <span class="vocab-meaning">مؤسسة خيرية</span>
+          </div>
+          <div class="vocab-pill">
+            <span class="vocab-word">gain experience</span>
+            <span class="vocab-meaning">يكتسب خبرة</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- SHEET 5: IN-CLASS CONVERSATION & EXIT QUIZ -->
+    <!-- ========================================== -->
+    <div class="sheet">
+      <div class="sheet-header">
+        <div class="sheet-title-group">
+          <h1>🗣️ In-Class Speaking Workshop & Exit Quiz</h1>
+          <div class="subtitle">ورشة التحدث والمحادثة التفاعلية + كويز تقييم فهم الحصة (15 دقيقة)</div>
+        </div>
+        <div class="section-badge badge-speaking">Speaking & Quiz</div>
+      </div>
+
+      <!-- Speaking Activity -->
+      <div class="speaking-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <div style="font-weight: 800; font-size: 15px; color: var(--accent);">
+            🎙️ Speaking Activity: "Past Memories vs Present Life"
+          </div>
+          <span style="font-size: 12px; background: white; padding: 2px 8px; border-radius: 20px; font-weight: 700; color: var(--accent);">Interactive Discussion</span>
+        </div>
+
+        <div class="dialogue-bubble">
+          <div class="avatar-badge">T</div>
+          <div class="bubble-text">
+            <strong>Teacher:</strong> "What kind of games did you <em>use to</em> play when you were six years old?"
+          </div>
+        </div>
+
+        <div class="dialogue-bubble">
+          <div class="avatar-badge" style="background: var(--secondary);">S</div>
+          <div class="bubble-text">
+            <strong>Student:</strong>
+            <input type="text" class="interactive-input" id="conv-ans-1" placeholder="Type your answer or speak aloud: When I was six, I used to..." oninput="saveProgress()">
+          </div>
+        </div>
+
+        <div class="dialogue-bubble">
+          <div class="avatar-badge">T</div>
+          <div class="bubble-text">
+            <strong>Teacher:</strong> "Can you tell me about an exciting surprise that happened <em>while</em> you were studying or traveling?"
+          </div>
+        </div>
+
+        <div class="dialogue-bubble">
+          <div class="avatar-badge" style="background: var(--secondary);">S</div>
+          <div class="bubble-text">
+            <strong>Student:</strong>
+            <input type="text" class="interactive-input" id="conv-ans-2" placeholder="Type your response: Once, while I was traveling..." oninput="saveProgress()">
+          </div>
+        </div>
+      </div>
+
+      <!-- Exit Quiz Section -->
+      <div class="sheet-header" style="margin-top: 20px; padding-bottom: 10px;">
+        <div class="sheet-title-group">
+          <h1 style="font-size: 17px; color: var(--warning);">⚡ Exit Quiz (End of Session)</h1>
+          <div class="subtitle">تقييم سريع للتأكد من إتقان قاعدة (Used to) والفروق اللغوية</div>
+        </div>
+        <div class="score-box">10 Marks</div>
+      </div>
+
+      <div class="q-list en-block">
+        <!-- Quiz Q1 -->
+        <div class="q-item" id="quiz-card-1">
+          <div class="q-header">
+            <div class="q-num" style="background: var(--warning);">1</div>
+            <div class="q-text">In ancient Egypt, people ............ paper from papyrus reeds.</div>
+          </div>
+          <div class="q-options">
+            <label class="opt-label" onclick="selectQuizOption(1, 'a', this)">
+              <input type="radio" name="qz1" value="a">
+              <span class="opt-custom-radio"></span>
+              <span><strong>a)</strong> used to make</span>
+            </label>
+            <label class="opt-label" onclick="selectQuizOption(1, 'b', this)">
+              <input type="radio" name="qz1" value="b">
+              <span class="opt-custom-radio"></span>
+              <span><strong>b)</strong> uses to make</span>
+            </label>
+            <label class="opt-label" onclick="selectQuizOption(1, 'c', this)">
+              <input type="radio" name="qz1" value="c">
+              <span class="opt-custom-radio"></span>
+              <span><strong>c)</strong> used to making</span>
+            </label>
+            <label class="opt-label" onclick="selectQuizOption(1, 'd', this)">
+              <input type="radio" name="qz1" value="d">
+              <span class="opt-custom-radio"></span>
+              <span><strong>d)</strong> didn't used to make</span>
+            </label>
+          </div>
+          <div class="explanation-box" id="quiz-exp-1"></div>
+        </div>
+
+        <!-- Quiz Q2 -->
+        <div class="q-item" id="quiz-card-2">
+          <div class="q-header">
+            <div class="q-num" style="background: var(--warning);">2</div>
+            <div class="q-text">Maged ............ get up early on Fridays, but now he does.</div>
+          </div>
+          <div class="q-options">
+            <label class="opt-label" onclick="selectQuizOption(2, 'a', this)">
+              <input type="radio" name="qz2" value="a">
+              <span class="opt-custom-radio"></span>
+              <span><strong>a)</strong> didn't use to</span>
+            </label>
+            <label class="opt-label" onclick="selectQuizOption(2, 'b', this)">
+              <input type="radio" name="qz2" value="b">
+              <span class="opt-custom-radio"></span>
+              <span><strong>b)</strong> didn't used to</span>
+            </label>
+            <label class="opt-label" onclick="selectQuizOption(2, 'c', this)">
+              <input type="radio" name="qz2" value="c">
+              <span class="opt-custom-radio"></span>
+              <span><strong>c)</strong> doesn't use to</span>
+            </label>
+            <label class="opt-label" onclick="selectQuizOption(2, 'd', this)">
+              <input type="radio" name="qz2" value="d">
+              <span class="opt-custom-radio"></span>
+              <span><strong>d)</strong> isn't used to</span>
+            </label>
+          </div>
+          <div class="explanation-box" id="quiz-exp-2"></div>
+        </div>
+
+        <!-- Quiz Q3 -->
+        <div class="q-item" id="quiz-card-3">
+          <div class="q-header">
+            <div class="q-num" style="background: var(--warning);">3</div>
+            <div class="q-text">Did your brother ............ wear a uniform at his primary school?</div>
+          </div>
+          <div class="q-options">
+            <label class="opt-label" onclick="selectQuizOption(3, 'a', this)">
+              <input type="radio" name="qz3" value="a">
+              <span class="opt-custom-radio"></span>
+              <span><strong>a)</strong> used to</span>
+            </label>
+            <label class="opt-label" onclick="selectQuizOption(3, 'b', this)">
+              <input type="radio" name="qz3" value="b">
+              <span class="opt-custom-radio"></span>
+              <span><strong>b)</strong> use to</span>
+            </label>
+            <label class="opt-label" onclick="selectQuizOption(3, 'c', this)">
+              <input type="radio" name="qz3" value="c">
+              <span class="opt-custom-radio"></span>
+              <span><strong>c)</strong> uses to</span>
+            </label>
+            <label class="opt-label" onclick="selectQuizOption(3, 'd', this)">
+              <input type="radio" name="qz3" value="d">
+              <span class="opt-custom-radio"></span>
+              <span><strong>d)</strong> using to</span>
+            </label>
+          </div>
+          <div class="explanation-box" id="quiz-exp-3"></div>
+        </div>
+
+        <!-- Quiz Q4 -->
+        <div class="q-item">
+          <div class="q-header">
+            <div class="q-num" style="background: var(--warning);">4</div>
+            <div class="q-text">Rewrite: <em>Karim no longer plays with toy cars. (used)</em></div>
+          </div>
+          <div style="padding-left: 36px; margin-top: 4px;">
+            <input type="text" class="interactive-input" id="quiz-rw-4" placeholder="Type your rewritten sentence here..." oninput="saveProgress()">
+          </div>
+        </div>
+
+        <!-- Quiz Q5 -->
+        <div class="q-item">
+          <div class="q-header">
+            <div class="q-num" style="background: var(--warning);">5</div>
+            <div class="q-text">Find & Correct the mistake: <em>"While Mariam used to sleep, the doorbell rang."</em></div>
+          </div>
+          <div style="padding-left: 36px; margin-top: 4px;">
+            <input type="text" class="interactive-input" id="quiz-err-5" placeholder="Type the correction here..." oninput="saveProgress()">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- SHEET 6: EXPANDED 4-SKILLS HOMEWORK (PAGE 1)-->
+    <!-- ========================================== -->
+    <div class="sheet">
+      <div class="sheet-header">
+        <div class="sheet-title-group">
+          <h1>🏡 Comprehensive 4-Skills Homework <span class="en" style="font-size: 15px; color: var(--danger);">(Part 1)</span></h1>
+          <div class="subtitle">الواجب المنزلي الشامل والموسع: تدريبات مكثفة على القراءة واللغة وإعادة الصياغة</div>
+        </div>
+        <div class="section-badge badge-homework">Homework Pack</div>
+      </div>
+
+      <!-- Skill 1: Reading -->
+      <div class="rule-card">
+        <div class="rule-header">
+          <div class="rule-title">Skill 1: Reading Comprehension & Vocabulary in Context</div>
+          <span class="score-box">Reading Skill</span>
+        </div>
+        
+        <div class="en-block" style="font-size: 13.5px; line-height: 1.6; color: var(--gray-800); margin-bottom: 10px;">
+          Many years ago, people in Egyptian villages <strong>used to wake up</strong> at sunrise to work in the fields. They didn't use to have electricity or modern machinery, so they depended on farm animals and simple manual tools. Children used to help their parents collect crops before going to the local school. Today, technology has entered modern farming, but traditional values of teamwork and generosity remain strong.
+        </div>
+
+        <div class="en-block" style="font-size: 13px;">
+          <strong>1. How did people in ancient villages do farm work without modern machines?</strong>
+          <input type="text" class="interactive-input" id="hw-read-1" placeholder="Write answer..." oninput="saveProgress()">
+
+          <div style="margin-top: 8px;">
+            <strong>2. Find a word in the text that means "doing things by hand / not automatic":</strong>
+            <input type="text" class="interactive-input" id="hw-read-2" placeholder="Write the word..." oninput="saveProgress()">
+          </div>
+        </div>
+      </div>
+
+      <!-- Skill 2: Language & Sentence Transformation (Expanded) -->
+      <div class="rule-card" style="margin-bottom: 0;">
+        <div class="rule-header">
+          <div class="rule-title">Skill 2: Sentence Transformations & Grammar Drills (Rewrite)</div>
+          <span class="score-box">Language Skill</span>
+        </div>
+
+        <div class="en-block" style="font-size: 13px; display: flex; flex-direction: column; gap: 10px;">
+          <div>
+            1. Salma no longer cries when she visits the dentist. <strong>(used to)</strong>
+            <input type="text" class="interactive-input" id="hw-rw-1" placeholder="Salma used to..." oninput="saveProgress()">
+          </div>
+
+          <div>
+            2. During our flight to London, a sudden storm began. <strong>(While)</strong>
+            <input type="text" class="interactive-input" id="hw-rw-2" placeholder="While we were..." oninput="saveProgress()">
+          </div>
+
+          <div>
+            3. Did your father walk to work when he was young? <strong>(use to)</strong>
+            <input type="text" class="interactive-input" id="hw-rw-3" placeholder="Did your father..." oninput="saveProgress()">
+          </div>
+
+          <div>
+            4. Hazem played the drums in the past, but now he plays the guitar. <strong>(used)</strong>
+            <input type="text" class="interactive-input" id="hw-rw-4" placeholder="Hazem used to..." oninput="saveProgress()">
+          </div>
+
+          <div>
+            5. When I was doing my science experiment, the test tube broke. <strong>(As)</strong>
+            <input type="text" class="interactive-input" id="hw-rw-5" placeholder="As I was..." oninput="saveProgress()">
+          </div>
+
+          <div>
+            6. It was not my habit to drink milk in the morning. <strong>(didn't)</strong>
+            <input type="text" class="interactive-input" id="hw-rw-6" placeholder="I didn't..." oninput="saveProgress()">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- SHEET 7: EXPANDED 4-SKILLS HOMEWORK (PAGE 2)-->
+    <!-- ========================================== -->
+    <div class="sheet">
+      <div class="sheet-header">
+        <div class="sheet-title-group">
+          <h1>🏡 Comprehensive Homework <span class="en" style="font-size: 15px; color: var(--danger);">(Part 2: Speaking & Writing)</span></h1>
+          <div class="subtitle">الواجب التعبيري: مهمة التحدث الصوتي + تصحيح الأخطاء + كتابة موضوع إنشائي</div>
+        </div>
+        <div class="section-badge badge-homework">Productive Skills</div>
+      </div>
+
+      <!-- Skill 3: Error Correction Booster -->
+      <div class="rule-card">
+        <div class="rule-header">
+          <div class="rule-title">Skill 3: Error Detection & Correction (Find the mistake and correct it)</div>
+          <span class="score-box">Accuracy</span>
+        </div>
+
+        <div class="en-block" style="font-size: 13px; display: flex; flex-direction: column; gap: 8px;">
+          <div>
+            1. She <span style="text-decoration: underline; color: var(--danger);">didn't used to</span> like vegetables when she was small.
+            <input type="text" class="interactive-input" id="hw-err-1" placeholder="Correct form..." oninput="saveProgress()">
+          </div>
+          <div>
+            2. While we were walking in the park, we <span style="text-decoration: underline; color: var(--danger);">were seeing</span> a lovely puppy.
+            <input type="text" class="interactive-input" id="hw-err-2" placeholder="Correct form..." oninput="saveProgress()">
+          </div>
+          <div>
+            3. Now, Ahmed <span style="text-decoration: underline; color: var(--danger);">used to walk</span> to his office every morning.
+            <input type="text" class="interactive-input" id="hw-err-3" placeholder="Correct form..." oninput="saveProgress()">
+          </div>
+          <div>
+            4. Did you <span style="text-decoration: underline; color: var(--danger);">used to having</span> long hair in primary school?
+            <input type="text" class="interactive-input" id="hw-err-4" placeholder="Correct form..." oninput="saveProgress()">
+          </div>
+        </div>
+      </div>
+
+      <!-- Skill 4: Speaking Homework Voice Task -->
+      <div class="speaking-card">
+        <div style="font-weight: 800; font-size: 14px; color: var(--accent); margin-bottom: 6px;">
+          🎙️ Skill 4: Speaking Challenge (Voice Recording Studio)
+        </div>
+        <div style="font-size: 12.5px; color: var(--gray-800); line-height: 1.5;" class="en-block">
+          <strong>Instructions:</strong> Record a <strong>60-second audio note</strong> answering this prompt:
+          <br>
+          <em>"Talk about three things you used to do in primary school that you don't do now in Prep 2, and mention one funny memory from your childhood!"</em>
+        </div>
+
+        <div class="voice-recorder-box">
+          <div class="record-controls">
+            <button class="record-btn" id="recordBtn" onclick="toggleRecording()">
+              <span id="record-icon">🔴</span> <span id="record-text">بدء التسجيل الصوتي</span>
+            </button>
+            <span id="record-timer" style="font-weight: 700; font-size: 13px; color: var(--gray-600);" class="en">00:00 / 01:00</span>
+            <audio id="audioPlayback" controls style="display: none; height: 35px;"></audio>
+          </div>
+          <div style="font-size: 12px; color: var(--gray-600);">
+            💡 يمكنك تسجيل صوتك وتجربة نطقك للإنجليزية والاستماع لنفسك مباشرة للتأكد من طلاقتك اللغوية قبل إرسال الفويس للمعلم.
+          </div>
+        </div>
+      </div>
+
+      <!-- Skill 5: Writing Task -->
+      <div class="rule-card" style="margin-bottom: 0;">
+        <div class="rule-header">
+          <div class="rule-title">Skill 5: Creative Writing (Paragraph Writing)</div>
+          <span class="score-box">Writing Skill</span>
+        </div>
+
+        <div class="en-block" style="font-size: 13px; margin-bottom: 8px;">
+          <strong>Prompt:</strong> Write a well-structured paragraph of <strong>80–90 words</strong> about: <br>
+          <span style="color: var(--primary); font-weight: 700;">"How Technology Has Changed Our Daily Habits Compared to the Past"</span>
+          <div style="font-size: 11.5px; color: var(--gray-600); margin-top: 3px;">
+            <em>Include: What people used to do before the internet, how communication was, and how we study and entertain ourselves today.</em>
+          </div>
+        </div>
+
+        <textarea class="interactive-textarea" id="writing-p2" placeholder="Write your paragraph here (e.g. In the past, people used to send paper letters to communicate...)..." oninput="saveProgress(); updateWordCount(this, 'wc-2')"></textarea>
+        <div style="text-align: left; font-size: 12px; color: var(--gray-600); margin-top: 4px;" class="en">
+          Word Count: <span id="wc-2" style="font-weight: 700; color: var(--primary);">0</span> / 90 words
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- SHEET 8: TEACHER'S MODEL ANSWER KEY       -->
+    <!-- ========================================== -->
+    <div class="sheet">
+      <div class="sheet-header">
+        <div class="sheet-title-group">
+          <h1>🔑 Model Answers & Teacher's Guide (Model B)</h1>
+          <div class="subtitle">نموذج الإجابات المعتمد للامتحان والكويز والواجب المنزلي الموسع</div>
+        </div>
+        <div class="section-badge badge-diagnostic">Answer Key</div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;" class="en-block">
+        <!-- Diagnostic MCQ Answers -->
+        <div class="rule-card" style="margin-bottom: 0;">
+          <div class="rule-title" style="font-size: 14px; margin-bottom: 8px; color: var(--primary);">Section A: MCQ (1-20) Answers</div>
+          <div style="font-size: 12.5px; line-height: 1.8;">
+            <strong>1.</strong> (b) won <em>(Past time: two weeks ago)</em><br>
+            <strong>2.</strong> (a) moves <em>(Scientific fact)</em><br>
+            <strong>3.</strong> (b) is going to <em>(Evidence on the edge)</em><br>
+            <strong>4.</strong> (b) do <em>(Plural subject 'parents' in present)</em><br>
+            <strong>5.</strong> (c) visited <em>(Last Friday)</em><br>
+            <strong>6.</strong> (a) will win <em>(Prediction with expect)</em><br>
+            <strong>7.</strong> (a) is always <em>(Freq adverb comes after Verb to be)</em><br>
+            <strong>8.</strong> (b) were you doing <em>(Interrupted action at 7 PM)</em><br>
+            <strong>9.</strong> (b) will be spending <em>(Specific future time)</em><br>
+            <strong>10.</strong> (b) is calling <em>(Right now)</em><br>
+            <strong>11.</strong> (b) tastes <em>(State verb)</em><br>
+            <strong>12.</strong> (b) are attending <em>(Arrangement)</em><br>
+            <strong>13.</strong> (a) was crossing <em>(As = While + Past Continuous)</em><br>
+            <strong>14.</strong> (b) leaves <em>(Official timetable)</em><br>
+            <strong>15.</strong> (a) will close <em>(Quick decision)</em><br>
+            <strong>16.</strong> (c) was <em>(Past state)</em><br>
+            <strong>17.</strong> (b) He knows the correct answer...<br>
+            <strong>18.</strong> (b) was playing <em>(Parallel continuous actions)</em><br>
+            <strong>19.</strong> (b) will help <em>(Offer / Promise)</em><br>
+            <strong>20.</strong> (a) rushed <em>(Consecutive past actions)</em>
+          </div>
+        </div>
+
+        <!-- Section B & Exit Quiz Answers -->
+        <div class="rule-card" style="margin-bottom: 0;">
+          <div class="rule-title" style="font-size: 14px; margin-bottom: 8px; color: var(--secondary);">Reading, Quiz & Homework Answers</div>
+          <div style="font-size: 12.5px; line-height: 1.8;">
+            <strong style="color: var(--accent);">Reading (Section B):</strong><br>
+            <strong>1.</strong> (b) Transforming an empty rooftop into a garden<br>
+            <strong>2.</strong> (b) Difficult and requiring effort<br>
+            <strong>3.</strong> Mint, tomatoes, and beautiful flowers.<br>
+            <strong>4.</strong> It gave them fresh vegetables and a peaceful community place to meet.
+            <br><br>
+            <strong style="color: var(--warning);">Exit Quiz Answers:</strong><br>
+            <strong>1.</strong> (a) used to make<br>
+            <strong>2.</strong> (a) didn't use to<br>
+            <strong>3.</strong> (b) use to<br>
+            <strong>4.</strong> Karim used to play with toy cars.<br>
+            <strong>5.</strong> While Mariam <strong>was sleeping</strong>, the doorbell rang.
+            <br><br>
+            <strong style="color: var(--success);">Homework Rewrite & Errors:</strong><br>
+            <strong>1.</strong> Salma used to cry when she visited the dentist.<br>
+            <strong>2.</strong> While we were flying to London, a sudden storm began.<br>
+            <strong>3.</strong> Did your father use to walk to work?<br>
+            <strong>4.</strong> Hazem used to play the drums.<br>
+            <strong>5.</strong> As I was doing my experiment, the test tube broke.<br>
+            <strong>6.</strong> I didn't use to drink milk in the morning.<br>
+            <em>Errors:</em> 1. didn't use to | 2. saw | 3. usually walks | 4. use to have
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 15px; background: #FFFBEB; border: 1px solid #FCD34D; padding: 12px 18px; border-radius: 8px; font-size: 13px; color: #92400E;">
+        💡 <strong>توجيه للمعلم/ولي الأمر:</strong> هذا النموذج (Model B) يركّز على تثبيت نفس الأفكار التي قد يخطئ فيها الطالب (مثل مواضع ظروف التكرار، أفعال الحواس والتقريرية state verbs، التحويل إلى didn't use to بدون حرف d، وأدوات الربط While/As) بدون وضع أي علامات إرشادية تسبق الحل حتى يعتمد الطالب على التفكير الذاتي الكامل.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Interactive JavaScript Logic -->
+  <script>
+    // Correct Answer Keys
+    const mcqKey = {
+      1: { ans: 'b', exp: '💡 الإجابة الصحيحة (b) won: لوجود الكلمة الدالة على الماضي البسيط (two weeks ago).' },
+      2: { ans: 'a', exp: '💡 الإجابة الصحيحة (a) moves: لأن دوران الأرض حقيقة علمية ثابتة (Scientific Fact) تأخذ مضارع بسيط.' },
+      3: { ans: 'b', exp: '💡 الإجابة الصحيحة (b) is going to: لوجود دليل واضح في الحاضر (الكوب على حافة الطاولة).' },
+      4: { ans: 'b', exp: '💡 الإجابة الصحيحة (b) do: لأن الفاعل جمع (your parents) والزمن مضارع بسيط (every year).' },
+      5: { ans: 'c', exp: '💡 الإجابة الصحيحة (c) visited: لوجود الكلمة الدالة (last Friday) في الماضي البسيط.' },
+      6: { ans: 'a', exp: '💡 الإجابة الصحيحة (a) will win: للتعبير عن التوقع والتنبؤ بدون دليل مع الفعل (expect).' },
+      7: { ans: 'a', exp: '💡 الإجابة الصحيحة (a) is always: لأن ظروف التكرار (always) تأتي بعد Verb to be (am / is / are).' },
+      8: { ans: 'b', exp: '💡 الإجابة الصحيحة (b) were you doing: لسؤال عن حدث كان مستمراً في وقت محدد بالماضي عند مقاطعته.' },
+      9: { ans: 'b', exp: '💡 الإجابة الصحيحة (b) will be spending: للتعبير عن حدث سيكون مستمراً في وقت محدد في المستقبل.' },
+      10: { ans: 'b', exp: '💡 الإجابة الصحيحة (b) is calling: للتعبير عن حدث يقع الآن (Right now / Hurry up!).' },
+      11: { ans: 'b', exp: '💡 الإجابة الصحيحة (b) tastes: لأن أفعال الحواس (State Verbs) لا تأتي في الأزمنة المستمرة عند وصف المذاق.' },
+      12: { ans: 'b', exp: '💡 الإجابة الصحيحة (b) are attending: لأن الترتيبات المؤكدة المجهزة مسبقاً (arranged everything) تأخذ مضارع مستمر.' },
+      13: { ans: 'a', exp: '💡 الإجابة الصحيحة (a) was crossing: لأن (As) تأخذ نفس قاعدة (While) ويليها ماضي مستمر.' },
+      14: { ans: 'b', exp: '💡 الإجابة الصحيحة (b) leaves: لأن مواعيد القطارات وجداول الرحلات الثابتة (Timetables) تأخذ مضارع بسيط.' },
+      15: { ans: 'a', exp: '💡 الإجابة الصحيحة (a) will close: قرار سريع وفوري (Quick decision).' },
+      16: { ans: 'c', exp: '💡 الإجابة الصحيحة (c) was: لأن فعل الكينونة في الماضي مع المفرد (she) هو was وليس didn\'t be.' },
+      17: { ans: 'b', exp: '💡 الإجابة الصحيحة (b) He knows...: لأن الفعل know من أفعال المعرفة والتقريرية التي لا تأتي في الاستمرار.' },
+      18: { ans: 'b', exp: '💡 الإجابة الصحيحة (b) was playing: حدثان مستمران في نفس الوقت في الماضي بالتوازي بدون مقاطعة.' },
+      19: { ans: 'b', exp: '💡 الإجابة الصحيحة (b) will help: للتعبير عن الوعد أو عرض المساعدة (Offer / Promise).' },
+      20: { ans: 'a', exp: '💡 الإجابة الصحيحة (a) rushed: أحداث متتابعة سريعة في الماضي البسيط كرد فعل فوري.' }
+    };
+
+    const quizKey = {
+      1: { ans: 'a', exp: '💡 الإجابة الصحيحة (a) used to make: للتعبير عن عادة في مصر القديمة (used to + infinitive).' },
+      2: { ans: 'a', exp: '💡 الإجابة الصحيحة (a) didn\'t use to: نفي عادة الماضي باستخدام didn\'t use to بدون حرف d.' },
+      3: { ans: 'b', exp: '💡 الإجابة الصحيحة (b) use to: تكوين السؤال مع Did يرجع الفعل لأصله (Did + Subject + use to + inf).' }
+    };
+
+    let userMCQAnswers = {};
+    let userQuizAnswers = {};
+
+    function selectOption(qNum, value, element) {
+      userMCQAnswers[qNum] = value;
+      const parentCard = document.getElementById(`q-card-${qNum}`);
+      parentCard.querySelectorAll('.opt-label').forEach(lbl => lbl.classList.remove('selected'));
+      element.classList.add('selected');
+      parentCard.classList.add('answered');
+      saveProgress();
+      updateProgressBar();
+    }
+
+    function selectQuizOption(qNum, value, element) {
+      userQuizAnswers[qNum] = value;
+      const parentCard = document.getElementById(`quiz-card-${qNum}`);
+      parentCard.querySelectorAll('.opt-label').forEach(lbl => lbl.classList.remove('selected'));
+      element.classList.add('selected');
+      parentCard.classList.add('answered');
+      saveProgress();
+      updateProgressBar();
+    }
+
+    function updateProgressBar() {
+      const mcqCount = Object.keys(userMCQAnswers).length;
+      const quizCount = Object.keys(userQuizAnswers).length;
+      const totalAnswered = mcqCount + quizCount;
+      const totalQuestions = 23;
+      const percentage = Math.round((totalAnswered / totalQuestions) * 100);
+
+      document.getElementById('progress-bar').style.width = percentage + '%';
+      document.getElementById('progress-text').innerText = `${percentage}% مكتمل (${totalAnswered} من ${totalQuestions} سؤال)`;
+    }
+
+    function updateWordCount(textarea, countSpanId) {
+      const words = textarea.value.trim().split(/\s+/).filter(w => w.length > 0);
+      document.getElementById(countSpanId).innerText = words.length;
+    }
+
+    function gradeExam() {
+      let mcqScore = 0;
+      let quizScore = 0;
+
+      // Grade MCQ (1-20)
+      for (let i = 1; i <= 20; i++) {
+        const card = document.getElementById(`q-card-${i}`);
+        const expBox = document.getElementById(`exp-${i}`);
+        const chosen = userMCQAnswers[i];
+        const correct = mcqKey[i].ans;
+
+        expBox.style.display = 'block';
+        expBox.innerHTML = mcqKey[i].exp;
+
+        if (chosen === correct) {
+          mcqScore++;
+          card.classList.add('correct-answer');
+          card.classList.remove('wrong-answer');
+          expBox.style.background = '#D1FAE5';
+          expBox.style.color = '#065F46';
+        } else {
+          card.classList.add('wrong-answer');
+          card.classList.remove('correct-answer');
+          expBox.style.background = '#FEE2E2';
+          expBox.style.color = '#991B1B';
+        }
+      }
+
+      // Grade Quiz (1-3)
+      for (let i = 1; i <= 3; i++) {
+        const card = document.getElementById(`quiz-card-${i}`);
+        const expBox = document.getElementById(`quiz-exp-${i}`);
+        const chosen = userQuizAnswers[i];
+        const correct = quizKey[i].ans;
+
+        expBox.style.display = 'block';
+        expBox.innerHTML = quizKey[i].exp;
+
+        if (chosen === correct) {
+          quizScore++;
+          card.classList.add('correct-answer');
+          card.classList.remove('wrong-answer');
+          expBox.style.background = '#D1FAE5';
+          expBox.style.color = '#065F46';
+        } else {
+          card.classList.add('wrong-answer');
+          card.classList.remove('correct-answer');
+          expBox.style.background = '#FEE2E2';
+          expBox.style.color = '#991B1B';
+        }
+      }
+
+      // Calculate Total & Percent
+      const totalScore = mcqScore + quizScore;
+      const totalPossible = 23;
+      const percentage = Math.round((totalScore / totalPossible) * 100);
+
+      document.getElementById('mcq-score').innerText = `${mcqScore} / 20`;
+      document.getElementById('quiz-score').innerText = `${quizScore} / 3`;
+      document.getElementById('percentage-score').innerText = `${percentage}%`;
+      document.getElementById('total-badge').innerText = `${mcqScore * 2} / 40`;
+
+      const scoreBanner = document.getElementById('score-banner');
+      scoreBanner.style.display = 'block';
+
+      if (percentage >= 85) {
+        document.getElementById('banner-title').innerText = '🌟 ممتاز جداً! Super Star!';
+        document.getElementById('banner-subtitle').innerText = 'أداء باهر وإتقان فائق لقواعد الأزمنة وعادات الماضي!';
+      } else if (percentage >= 65) {
+        document.getElementById('banner-title').innerText = '👍 عمل جيد جداً (Very Good)';
+        document.getElementById('banner-subtitle').innerText = 'مستوى ممتاز، راجعي النقاط الخاطئة باللون الأحمر للشرح النموذجي.';
+      } else {
+        document.getElementById('banner-title').innerText = '💪 تحتاج لمزيد من المراجعة والتركيز';
+        document.getElementById('banner-subtitle').innerText = 'تم توضيح سبب كل إجابة في الصندوق أسفل كل سؤال.';
+      }
+
+      scoreBanner.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function saveProgress() {
+      const state = {
+        studentName: document.getElementById('studentName').value,
+        userMCQAnswers,
+        userQuizAnswers,
+        readQ1: document.getElementById('read-q1')?.value || '',
+        readQ2: document.getElementById('read-q2')?.value || '',
+        readQ3: document.getElementById('read-q3')?.value || '',
+        readQ4: document.getElementById('read-q4')?.value || '',
+        writeP1: document.getElementById('writing-p1')?.value || '',
+        writeP2: document.getElementById('writing-p2')?.value || '',
+        hwRw1: document.getElementById('hw-rw-1')?.value || '',
+        hwRw2: document.getElementById('hw-rw-2')?.value || '',
+        hwRw3: document.getElementById('hw-rw-3')?.value || ''
+      };
+      try {
+        localStorage.setItem('prep2_model_b_state', JSON.stringify(state));
+      } catch (e) {}
+    }
+
+    function loadProgress() {
+      try {
+        const saved = localStorage.getItem('prep2_model_b_state');
+        if (!saved) return;
+        const state = JSON.parse(saved);
+
+        if (state.studentName) document.getElementById('studentName').value = state.studentName;
+        if (state.readQ1) document.getElementById('read-q1').value = state.readQ1;
+        if (state.readQ2) document.getElementById('read-q2').value = state.readQ2;
+        if (state.readQ3) document.getElementById('read-q3').value = state.readQ3;
+        if (state.readQ4) document.getElementById('read-q4').value = state.readQ4;
+        if (state.writeP1) {
+          document.getElementById('writing-p1').value = state.writeP1;
+          updateWordCount(document.getElementById('writing-p1'), 'wc-1');
+        }
+        if (state.writeP2) {
+          document.getElementById('writing-p2').value = state.writeP2;
+          updateWordCount(document.getElementById('writing-p2'), 'wc-2');
+        }
+
+        if (state.userMCQAnswers) {
+          userMCQAnswers = state.userMCQAnswers;
+          for (let q in userMCQAnswers) {
+            const card = document.getElementById(`q-card-${q}`);
+            if (card) {
+              const opt = card.querySelector(`input[value="${userMCQAnswers[q]}"]`)?.closest('.opt-label');
+              if (opt) {
+                opt.classList.add('selected');
+                card.classList.add('answered');
+              }
+            }
+          }
+        }
+
+        if (state.userQuizAnswers) {
+          userQuizAnswers = state.userQuizAnswers;
+          for (let q in userQuizAnswers) {
+            const card = document.getElementById(`quiz-card-${q}`);
+            if (card) {
+              const opt = card.querySelector(`input[value="${userQuizAnswers[q]}"]`)?.closest('.opt-label');
+              if (opt) {
+                opt.classList.add('selected');
+                card.classList.add('answered');
+              }
+            }
+          }
+        }
+
+        updateProgressBar();
+      } catch(e) {}
+    }
+
+    function resetAllAnswers() {
+      if (confirm('هل أنتِ متأكدة من رغبتك في إعادة تعيين جميع الإجابات والبدء من جديد؟')) {
+        localStorage.removeItem('prep2_model_b_state');
+        location.reload();
+      }
+    }
+
+    // Voice Recording Logic
+    let mediaRecorder;
+    let audioChunks = [];
+    let isRecording = false;
+    let timerInterval;
+    let secondsElapsed = 0;
+
+    async function toggleRecording() {
+      const recordBtn = document.getElementById('recordBtn');
+      const recordIcon = document.getElementById('record-icon');
+      const recordText = document.getElementById('record-text');
+      const audioPlayback = document.getElementById('audioPlayback');
+      const recordTimer = document.getElementById('record-timer');
+
+      if (!isRecording) {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          mediaRecorder = new MediaRecorder(stream);
+          audioChunks = [];
+
+          mediaRecorder.ondataavailable = (e) => {
+            if (e.data.size > 0) audioChunks.push(e.data);
+          };
+
+          mediaRecorder.onstop = () => {
+            const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+            const audioUrl = URL.createObjectURL(audioBlob);
+            audioPlayback.src = audioUrl;
+            audioPlayback.style.display = 'block';
+          };
+
+          mediaRecorder.start();
+          isRecording = true;
+          recordBtn.classList.add('recording');
+          recordIcon.innerText = '⏹️';
+          recordText.innerText = 'إيقاف وحفظ التسجيل';
+
+          secondsElapsed = 0;
+          timerInterval = setInterval(() => {
+            secondsElapsed++;
+            const mins = String(Math.floor(secondsElapsed / 60)).padStart(2, '0');
+            const secs = String(secondsElapsed % 60).padStart(2, '0');
+            recordTimer.innerText = `${mins}:${secs} / 01:00`;
+            if (secondsElapsed >= 60) {
+              toggleRecording();
+            }
+          }, 1000);
+        } catch (err) {
+          alert('يرجى السماح بالوصول للمايكروفون لبدء التسجيل الصوتي أو استخدام مسجل الصوت بالهاتف.');
+        }
+      } else {
+        if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+          mediaRecorder.stop();
+        }
+        clearInterval(timerInterval);
+        isRecording = false;
+        recordBtn.classList.remove('recording');
+        recordIcon.innerText = '🔴';
+        recordText.innerText = 'تسجيل مقطع جديد';
+      }
+    }
+
+    // Auto initialize on load
+    window.addEventListener('DOMContentLoaded', () => {
+      loadProgress();
+    });
+  </script>
+
+</body>
+</html>
